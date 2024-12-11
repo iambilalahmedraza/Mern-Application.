@@ -1,0 +1,25 @@
+.register-container {
+  width: 500px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #383737;
+  margin: auto;
+}
+.register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+form input {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+}
+form a {
+  color: rgb(153, 150, 150);
+}
+.button {
+  background-color: rgb(4, 37, 36);
+}
