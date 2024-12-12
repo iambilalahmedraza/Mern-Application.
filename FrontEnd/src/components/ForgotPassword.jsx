@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
   const [userInput, setUserInput] = useState({ email: "", newpassword: "" });
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
@@ -16,6 +17,7 @@ const ForgotPassword = () => {
     if (userInput.email === "" || userInput.newpassword === "") {
       toast.error("Enter All fields TO continue");
     }
+    setLoading(!loading);
     const callApi = await fetch("http://localhost:6001/forgot", {
       method: "POST",
       headers: {
@@ -52,7 +54,9 @@ const ForgotPassword = () => {
           name="newpassword"
         />
         <Link to="/signin"> redirect to login</Link>
-        <button>Reset Password</button>
+        <button className="text-white">
+          {loading ? "Loading..." : "Reset Password"}
+        </button>
       </form>
     </div>
   );

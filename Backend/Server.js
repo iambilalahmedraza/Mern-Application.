@@ -98,6 +98,9 @@ app.post("/logincheck", async (req, res) => {
   const { email, password } = req.body;
   try {
     const findMail = await Users.findOne({ email });
+    if (!findMail) {
+      return res.status(404).json({ message: "no account with this email " });
+    }
     const findpassword = await bcrypt.compare(password, findMail.password);
     if (findMail && findpassword) {
       const token = createCookie(findMail._id, res);

@@ -10,6 +10,8 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const handleChange = (e) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
@@ -23,6 +25,7 @@ const Register = () => {
     ) {
       return toast.error("Every input field must have a value...");
     }
+    setLoading(true);
     const callAPI = await fetch("http://localhost:6001/registrationcheck", {
       method: "POST",
       headers: {
@@ -33,7 +36,8 @@ const Register = () => {
     const response = await callAPI.json();
 
     if (response.error) {
-      return toast.error(response.error);
+      toast.error(response.error);
+      return setLoading(false);
     }
     navigate("/verification");
   };
@@ -65,7 +69,9 @@ const Register = () => {
           placeholder="Please Enter Username"
         />
         <Link to="/signin">Already have an Account?Login</Link>
-        <button type="submit">Submit</button>
+        <button type="submit" className="text-white">
+          {loading ? "Loading..." : "Submit"}
+        </button>
       </form>
     </div>
   );

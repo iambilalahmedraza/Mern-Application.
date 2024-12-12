@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 
 const SignIn = () => {
   const [userInput, setUserInput] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
@@ -15,6 +17,8 @@ const SignIn = () => {
     if (userInput.email === "" || userInput.password === "") {
       return toast.error("Every field must be filled");
     }
+    setLoading(true);
+
     const callApi = await fetch("http://localhost:6001/logincheck", {
       method: "POST",
       headers: {
@@ -24,7 +28,12 @@ const SignIn = () => {
     });
     const response = await callApi.json();
     if (response.error) {
-      return toast.error(response.error);
+      toast.error(response.error);
+      return setLoading(false);
+    }
+    if (response.message === "no account with this email ") {
+      toast.error("no account with this email ");
+      return setLoading(false);
     }
     toast.success("succesFully Logged In");
     localStorage.setItem("currentUser", JSON.stringify(response));
@@ -53,7 +62,10 @@ const SignIn = () => {
           <Link to="/">Don't have an account ? register</Link>
           <Link to="/forgotpassword">forgot password?</Link>
         </div>
-        <button>Login</button>
+        <button className="text-white">
+          {" "}
+          {loading ? "Loading..." : "Login"}
+        </button>
       </form>
     </div>
   );
